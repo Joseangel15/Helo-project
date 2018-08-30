@@ -1,0 +1,106 @@
+
+
+.allBoxes{
+    min-height: 100vh;
+    width: 750px;
+    margin: auto;
+    margin-top: 20px;
+    
+
+}
+
+.editProfBtn{
+    margin: 15px 0px 0px 10px;
+    width: 155px;
+    height: 30px;
+    border-radius: 1px;
+    background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb); border: solid 1px #ccc3c3;
+}
+
+.filterSelector{
+    display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+
+.grayBackGround {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgb(242, 242, 242);
+}
+
+p{
+    text-align: left;
+    margin: 10px 5px 0px 5px;
+}
+
+.pageInfoBox{
+    border: 2px solid white;
+    width: 500px;
+    height: 120px;
+    background-color: white
+}
+
+.recommended{
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    margin: 0px 5px 0px 5px
+}
+
+.recommendedFriBox{
+    border: 2px solid white;
+    width: 746px;
+    min-height: 550px;
+    margin-top: 30px;
+    background-color: white;
+
+}
+
+.recommendedResults{
+    border: 2px solid black;
+    margin: auto;
+    width: 700px;
+    min-height: 500px;
+    margin-bottom: 10px;
+    overflow: auto
+    ;
+}
+
+.select{
+    height: 25px;
+    margin: 18px 0px 0px 5px;
+}
+
+.userInfoBox{
+    border: 2px solid white;
+    width: 350px;
+    height: 120px;
+    background-color: white;
+    margin-right: 15px;
+    display: flex;
+    justify-content: flex-start;
+    height: 100%;
+
+}
+
+.userName{
+    margin: 5px 0px 5px 10px;
+    text-align: left;
+}
+
+.userPageInfo{
+    display: flex;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.userPic{
+    width: 107px;
+    height: 107px;
+    border: 1px solid black;
+    margin: 5px;
+    
+}

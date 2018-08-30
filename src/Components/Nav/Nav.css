@@ -1,0 +1,54 @@
+
+.dashH4{
+    margin-right: 93px;
+}
+
+.findBtn{
+    background-image: url(search.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    margin-left: 15px;
+
+    height: 30px;
+    width: 30px;
+}
+
+.helHomFin{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.heloNav{
+    /* margin: auto; */
+    margin: 15px 20px 0px 0px;
+}
+
+.homeBtn{
+    background-image: url(home.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    height: 30px;
+    width: 30px;
+}
+
+.homeFin {
+    height: 30px;
+    margin-top: 15px;
+    
+     
+}
+
+.navBox {
+    width: 100%;
+    height: 55px;
+    background-image:  linear-gradient(97deg, #ff7a6e, #ff9770);
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,0.1), 0 6px 6px 0 rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-around;
+    color: white;
+}
+
+
