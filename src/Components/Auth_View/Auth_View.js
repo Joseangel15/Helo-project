@@ -1,13 +1,20 @@
-import React, {Component} from "react";
+import React from 'react';
 import './Auth_View.css';
 
 
 
 
-class Auth_View extends Component {
+function Auth_View() {
 
+        function login(){
+            let { REACT_APP_DOMAIN, REACT_APP_CLIENT_ID } = process.env;
 
-    render(){
+            let redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
+
+            window.location = `https://${REACT_APP_DOMAIN}/authorize?client_id=${REACT_APP_CLIENT_ID}&scope=openid%20profile%20email&redirect_uri=${redirectUri}&response_type=code`;
+        }
+
+    
         return(
             <div className='mainBackGround'>
                 
@@ -24,7 +31,15 @@ class Auth_View extends Component {
                         </div>
 
                         <div>
-                            <button className='loginBtn'>Login / Register</button>
+
+                            <button 
+                                className='loginBtn'
+                                onClick={login}>
+                                
+                                Login / Register
+                                
+                                </button>
+
                         </div>
 
                     </div>
@@ -36,6 +51,6 @@ class Auth_View extends Component {
     }
 
 
-}
+
 
 export default Auth_View;

@@ -68,7 +68,7 @@ class Dashboard extends Component {
                         </div>
 
                         <div className='recommendedResults'>
-
+                            No Recommendations
                         </div>
 
                     </div>

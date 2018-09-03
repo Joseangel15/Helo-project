@@ -1,0 +1,76 @@
+
+.fullName{
+    margin-top: 25px;
+}
+
+.h6Names{
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.inputMania{
+    border: 2px solid white;
+    display: flex;
+    justify-content: space-evenly;
+    height: 100%;
+    margin-top: 30px;
+    padding-bottom: 60px;
+    background-color: white;
+}
+
+.nameAndPic{
+    display: flex;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.profCancelBtn{
+    width: 100px;
+    height: 30px;
+    border-radius: 1px;
+    background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb); border: solid 1px #ccc3c3;
+}
+
+.profileBtns{
+    /* border: 2px solid black; */
+    display: flex;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 300px;
+    margin-top: 45px;
+}
+
+.profileInputs{
+    border: 1px solid rgb(255, 151, 112);
+}
+
+.profileSelects{
+    width: 170px;
+    border-radius: 5px;
+}
+
+.profUpdateBtn{
+    height: 30px;
+    width: 100px;
+    color: white;
+    border-radius: 2px;
+    background-color: rgb(53, 53, 53);
+    border: none;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.2); 
+}
+
+.userAndBtns{
+    border: 2px solid white;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    background-color: white;
+}
+
+.userPicProf{
+    width: 107px;
+    height: 107px;
+    border: 1px solid black;
+    margin: 10px;
+}
