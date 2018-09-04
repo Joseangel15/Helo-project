@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 import './Profile_Nav.css'
+import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 
 class Profile_Nav extends Component {
+    constructor(props) {
+        super(props)
 
+
+
+
+        this.handleLogout = this.handleLogout.bind(this);
+    }
+
+    handleLogout() {
+
+        axios.get('/api/logout')
+    }
 
 
 
@@ -17,8 +31,8 @@ class Profile_Nav extends Component {
                     </div>
 
                     <div className='homeFin'>
-                        <button className='homeBtn'></button>
-                        <button className='findBtn'></button>
+                    <Link to='/Dashboard'><button className='homeBtn'></button></Link>
+                    <Link to='/Search_View'><button className='findBtn'></button></Link>
                     </div>
                 </div>
 
@@ -27,7 +41,14 @@ class Profile_Nav extends Component {
                 </div>
 
                 <div>
-                    <h4>Logout</h4>
+                    <Link to='/'><button
+
+                        onClick={this.handleLogout}
+                        className='logoutBtn'>
+
+                        Logout
+
+                    </button></Link>
                 </div>
 
             </div>

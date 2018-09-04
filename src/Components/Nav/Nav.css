@@ -51,4 +51,12 @@
     color: white;
 }
 
+.logoutBtn{
+    border: none;
+    background-color: transparent;
+    color: white;
+    margin-top: 17px;
+    font-size: 17px;
+}
+
 

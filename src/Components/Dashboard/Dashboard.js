@@ -1,14 +1,47 @@
 import React, { Component } from 'react';
 import Nav from '../Nav/Nav';
 import './Dashboard.css';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 
 
 
 class Dashboard extends Component {
+    constructor(props){
+        super(props)
 
 
+        this.state ={
 
+
+            userInfo: [],
+            userPic: [],
+            first_name: '',
+            last_name: ''
+
+        }
+    }
+
+    componentDidMount () {
+        axios.get('/api/user').then(res => {
+            this.setState({
+                userInfo: res.data,
+                first_name: res.data[0].first_name,
+                last_name: res.data[0].last_name
+                
+            })
+            console.log(this.state.userInfo)
+        })
+
+        axios.get('/api/userPic').then(res => {
+            this.setState({
+                userPic: res.data[0].user_pic
+            })
+            console.log(this.state.userPic)
+
+        })
+    }
 
     render() {
 
@@ -24,13 +57,22 @@ class Dashboard extends Component {
                         <div className='userInfoBox'>
 
                             <div className='userPic'>
-
+                                <img 
+                                    src={this.state.userPic} 
+                                    alt=""
+                                    className='truePic'/>
                             </div>
 
                             <div>
-                                <h3 className='userName'>Firstname</h3>
-                                <h3 className='userName'>Lastname</h3>
-                                <button className='editProfBtn'>Edit Profile</button>
+                                <h3 className='userName'>{this.state.first_name}</h3>
+                                <h3 className='userName'>{this.state.last_name}</h3>
+                                <Link to='/Profile_View'><button 
+                                    className='editProfBtn'
+                                    >
+                                    
+                                    Edit Profile
+                                    
+                                    </button></Link>
                             </div>
 
                         </div>

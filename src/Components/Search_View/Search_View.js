@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Search_View.css';
-import Search_Nav from '../Nav/Search_Nav';
+import SearchNav from '../Nav/Search_Nav';
 
 
 class Search_View extends Component {
@@ -11,9 +11,10 @@ class Search_View extends Component {
         return(
             <div>
 
-                <Search_Nav />
 
                 <div className='grayBackGround'>
+                
+                    <SearchNav />
 
                     <div className='searchBox'>
 

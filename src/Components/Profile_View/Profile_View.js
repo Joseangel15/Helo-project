@@ -1,11 +1,37 @@
 import React, { Component } from 'react';
-import Profile_Nav from '../Nav/Profile_Nav';
+import ProfileNav from '../Nav/Profile_Nav';
 import './Profile_View.css';
+import axios from 'axios';
 
 
 
 class Profile_View extends Component {
+    constructor(props){
+        super(props)
 
+
+        this.state = {
+
+            allUserInfo: [],
+            first_name: '',
+            last_name: '',
+        }
+
+
+        
+    }
+
+    componentDidMount () {
+        axios.get('/api/user').then(res => {
+            this.setState({
+                allUserInfo: res.data,
+                first_name: res.data[0].first_name,
+                last_name: res.data[0].last_name
+                
+            })
+            console.log(this.state.allUserInfo)
+        })
+    }
 
 
     render() {
@@ -16,7 +42,7 @@ class Profile_View extends Component {
             
             <div className='grayBackGround'>
 
-                <Profile_Nav />
+                <ProfileNav />
 
                 <div className='allBoxes'>
 
@@ -30,7 +56,7 @@ class Profile_View extends Component {
 
                             <div>
 
-                                <h3 className='fullName'>First Name</h3>
+                                <h3 className='fullName'>{this.state.first_name}</h3>
 
                                 <h3 className='fullName'>Last Name</h3>
 
