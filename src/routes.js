@@ -11,7 +11,7 @@ export default (
 
     <Switch>
         <Route component={Auth_View} exact path='/' />
-        <Route component={Dashboard} path='/dashboard' />
+        <Route component={Dashboard} path='/dashboard/' />
         <Route component={Profile_View} path='/profile_view' />
         <Route component={Search_View} path='/search_view' />
     </Switch>

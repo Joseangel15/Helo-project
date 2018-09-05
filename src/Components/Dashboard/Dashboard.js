@@ -18,7 +18,9 @@ class Dashboard extends Component {
             userInfo: [],
             userPic: [],
             first_name: '',
-            last_name: ''
+            last_name: '',
+            allUsers: [],
+            id: ''
 
         }
     }
@@ -28,22 +30,68 @@ class Dashboard extends Component {
             this.setState({
                 userInfo: res.data,
                 first_name: res.data[0].first_name,
-                last_name: res.data[0].last_name
+                last_name: res.data[0].last_name,
+                id: res.data[0].id
                 
             })
+
+            const {id} = this.state
+    
+            const body = {
+    
+                id,
+            }
+    
+            console.log(body)
+    
+            axios.post(`/api/allUsers`, body).then(res => {
+                this.setState({
+                    allUsers: res.data
+                })
+                console.log(this.state.allUsers)
+            })
+            
             console.log(this.state.userInfo)
+            console.log(this.state.id)
         })
 
         axios.get('/api/userPic').then(res => {
             this.setState({
-                userPic: res.data[0].user_pic
+                userPic: res.data[0].picture
             })
-            console.log(this.state.userPic)
+            console.log(res.data)
 
         })
+
     }
 
     render() {
+
+        const users = this.state.allUsers.map(el => {
+            return (
+                <div className='userCard' key={el.id}>
+                    <div className='nameAndPic'>
+                        <div className='userPic3'>
+
+                            <img src={el.picture} alt="" className='truePic3'/>
+
+                        </div>
+
+                        <div className='fullName2'>
+
+                            <h5 className='firstName1'>{el.first_name}</h5>
+                            <h5 className='lastName1'>{el.last_name}</h5>
+
+                        </div>
+
+                    </div>
+
+                    <div className='btnBox'>
+                        <button className='addFriendBtn'>Add Friend</button>
+                    </div>
+                </div>
+            )
+        })
 
         return (
             <div className='grayBackGround'>
@@ -110,7 +158,7 @@ class Dashboard extends Component {
                         </div>
 
                         <div className='recommendedResults'>
-                            No Recommendations
+                            {users}
                         </div>
 
                     </div>

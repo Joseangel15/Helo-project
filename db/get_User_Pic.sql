@@ -1,3 +1,3 @@
-SELECT user_pic
-FROM heloUsers
+SELECT picture
+FROM allHeloUsers
 WHERE auth_id = $1;

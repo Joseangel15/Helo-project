@@ -4,6 +4,7 @@ const massive = require('massive');
 const express = require('express');
 const controller = require('./Controllers/controllers');
 const session = require('express-session');
+const mid = require('./middleware');
 const axios = require('axios');
 const app = express();
 
@@ -32,6 +33,8 @@ massive( CONNECTION_STRING ).then(dbInstance => {
 }).catch(err => console.log(err));
 
 app.use(bodyParser.json())
+app.use(mid.bypassAuthInDevelop)
+
 
 console.log('hello')
 
@@ -51,13 +54,16 @@ app.get('/auth/callback', async (req, res) => {
     const db = req.app.get('db');
     let {sub, name, picture, given_name, family_name, gender} = userData.data;
     let userExists = await db.find_User([sub]);
+
+    let user_robot = (`https://robohash.org/${Math.floor(Math.random() * 999)}`);
+
     if (userExists[0]) {
         req.session.user = userExists[0];
         res.redirect(`http://localhost:3000/#/dashboard`)
     }else {
         db.create_User([sub, name, picture, given_name, family_name, gender]).then( create_User => {
             req.session.user = create_User[0];
-            db.create_User_Info([sub, given_name, family_name, gender]).then( res => {
+            db.create_User_Info([sub, given_name, family_name, gender, user_robot]).then( res => {
                 
             });
         })
@@ -87,5 +93,13 @@ let c = controller
 app.get('/api/user', c.getUserInfo)
 
 app.get('/api/userPic', c.getUserPic)
+
+//Edit User Info
+
+app.put('/api/updateUser/:id', c.updateUserInfo)
+
+//Get all recommendations
+
+app.post('/api/allUsers', c.getAllUsers)
 
 app.listen(SERVER_PORT, () => { console.log(`It's fun to stay in port ${SERVER_PORT}!`);});

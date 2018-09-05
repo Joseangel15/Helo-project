@@ -1,4 +1,13 @@
 
+.addFriendBtn{
+
+    border-radius: 1px;
+    background-image: radial-gradient(circle at 50%-46%, #ff9770, #ff7a6e);
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.2);
+    color: white;
+    border: none;
+    height: 30px;
+}
 
 .allBoxes{
     min-height: 100vh;
@@ -7,6 +16,10 @@
     margin-top: 20px;
     
 
+}
+
+.btnBox{
+    margin: auto;
 }
 
 .editProfBtn{
@@ -19,16 +32,37 @@
 
 .filterSelector{
     display: flex;
-  justify-content: center;
-  height: 100%;
+    justify-content: center;
+    height: 100%;
+}
+
+.firstName1{
+    margin-bottom: 0px;
+    margin-top: 40px;
+}
+
+.fullName2{
+    margin: 0px 0px 0px 10px;
+    margin-top: none;
+    width: 80px;
 }
 
 
 .grayBackGround {
     position: fixed;
     min-width: 100%;
-    min-height: 100%;
+    max-height: 100%;
     background-color: rgb(242, 242, 242);
+}
+
+.lastName1{
+    margin-top: 0px;
+}
+
+.nameAndPic{
+    display: flex;
+    justify-content: space-evenly;
+    height: 100%;
 }
 
 p{
@@ -46,27 +80,32 @@ p{
 .recommended{
     display: flex;
     justify-content: space-between;
-    height: 100%;
+    height: 50px;
     margin: 0px 5px 0px 5px
 }
 
 .recommendedFriBox{
     border: 2px solid white;
     width: 746px;
-    min-height: 550px;
+    height: 65vh;
+    margin: auto;
     margin-top: 30px;
-    background-color: white;
+    background-color: white;    
 
 }
 
 .recommendedResults{
-    border: 2px solid black;
+    /* border: 2px solid black; */
     margin: auto;
     width: 700px;
-    min-height: 500px;
+    padding: 10px;
+    max-height: 55vh;
     margin-bottom: 10px;
-    overflow: auto
-    ;
+    overflow: auto;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    height: 100%;
 }
 
 .select{
@@ -78,6 +117,24 @@ p{
     position: block;
     width: 100%;
     height: 100%; 
+}
+
+.truePic3{
+    position: block;
+    height: 100%;
+    width: 100%;
+}
+
+.userCard{
+    display: flex;
+    justify-content: space-between;
+    max-height: 101px;
+    width: 330px;
+    border: 1px solid white;
+    margin-left: 10px;
+    margin: 10px 7px 10px 0px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.2);
+    
 }
 
 .userInfoBox{
@@ -109,4 +166,10 @@ p{
     border: 1px solid black;
     margin: 5px;
     
+}
+
+.userPic3{
+    width: 100px;
+    height: 100px;
+    /* border: 1px solid black; */
 }

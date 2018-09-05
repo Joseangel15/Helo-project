@@ -2,11 +2,13 @@ INSERT INTO allHeloUsers
 (   auth_id, 
     first_name,
     last_name,
-    gender
+    gender,
+    picture
 )VALUES(
     $1,
     $2,
     $3,
-    $4
+    $4,
+    $5
 )
 Returning *;
