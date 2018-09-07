@@ -106,6 +106,7 @@ p{
     align-items: flex-start;
     flex-wrap: wrap;
     height: 100%;
+    align-content: flex-start;
 }
 
 .select{

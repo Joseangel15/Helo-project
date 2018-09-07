@@ -29,6 +29,7 @@ module.exports = {
     updateUserInfo: (req, res, next) => {
         const db = req.app.get('db');
         const {id} = req.params
+        
         const {
 
             first_name,
@@ -74,7 +75,54 @@ module.exports = {
         db.getFiltered([id]).then(user => {
             res.status(200).send(user);
         }).catch(err => console.log(err))
+    },
+
+    get_Users: (req, res, next) => {
+        const db = req.app.get('db');
+        const {id} = req.body
+
+        console.log(req.body)
+
+        db.get_All_Searched([id]).then(user => {
+            res.status(200).send(user);
+        }).catch(err => console.log(err))
+    },
+
+    getByFirstName: (req, res, next) => {
+        console.log('flower')
+        const db = req.app.get('db');
+        
+        const {
+            
+            
+            nameInput,
+            id
+            
+        } = req.body
+        
+        db.get_filteredBy_FirstName([ nameInput, id]).then( user => {
+            res.status(200).send(user)
+        }).catch(err => console.log(err))
+    },
+
+    getByLastName: (req, res, next) => {
+        
+        console.log('flower')
+        const db = req.app.get('db');
+        
+        const {
+            
+            
+            nameInput,
+            id
+            
+        } = req.body
+        
+        db.get_filteredBy_LastName([ nameInput, id]).then( user => {
+            res.status(200).send(user)
+        }).catch(err => console.log(err))
     }
+
 
 
 }

@@ -36,8 +36,6 @@ app.use(bodyParser.json())
 app.use(mid.bypassAuthInDevelop)
 
 
-console.log('hello')
-
 app.get('/auth/callback', async (req, res) => {
     let payload = {
         client_id: REACT_APP_CLIENT_ID,
@@ -105,5 +103,16 @@ app.post('/api/allUsers', c.getAllUsers)
 //Get all user results to filter
 
 app.post('/api/allRecommended', c.getFiltered)
+
+//Get users for the Search View
+
+app.post(`/api/allSearchedUsers`, c.get_Users)
+
+//Get filtered users based on first and last name
+
+app.post('/api/getByFirstName', c.getByFirstName)
+
+app.post('/api/getByLastName', c.getByLastName)
+
 
 app.listen(SERVER_PORT, () => { console.log(`It's fun to stay in port ${SERVER_PORT}!`);});

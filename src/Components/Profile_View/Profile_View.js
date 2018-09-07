@@ -63,6 +63,8 @@ class Profile_View extends Component {
         
         const { first_name, last_name, gender, hair_color, eye_color, hobby, birthday_day, birthday_month, birthday_year, id } = this.state;
 
+        if(birthday_day === 'select' || birthday_month === 'select' || birthday_year === 'select' ) return alert("Birthday information is required.");
+
         const body = {
 
             first_name,
@@ -179,6 +181,7 @@ class Profile_View extends Component {
                                     value={this.state.gender}
                                     onChange={this.handleChangeInfo}>
 
+                                    <option value="select">select</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
