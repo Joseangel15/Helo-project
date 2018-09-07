@@ -63,6 +63,17 @@ module.exports = {
         db.get_All_Users([id]).then(user => {
             res.status(200).send(user);
         }).catch(err => console.log(err))
+    },
+
+    getFiltered: (req, res, next) => {
+        const db = req.app.get('db');
+        const {id} = req.body
+        
+        console.log(req.body)
+
+        db.getFiltered([id]).then(user => {
+            res.status(200).send(user);
+        }).catch(err => console.log(err))
     }
 
 

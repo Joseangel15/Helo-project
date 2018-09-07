@@ -102,4 +102,8 @@ app.put('/api/updateUser/:id', c.updateUserInfo)
 
 app.post('/api/allUsers', c.getAllUsers)
 
+//Get all user results to filter
+
+app.post('/api/allRecommended', c.getFiltered)
+
 app.listen(SERVER_PORT, () => { console.log(`It's fun to stay in port ${SERVER_PORT}!`);});
