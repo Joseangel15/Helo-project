@@ -121,6 +121,44 @@ module.exports = {
         db.get_filteredBy_LastName([ nameInput, id]).then( user => {
             res.status(200).send(user)
         }).catch(err => console.log(err))
+    },
+
+    addFriend: (req, res, next) => {
+        const db = req.app.get('db');
+        const {
+            first_name,
+            last_name,
+            id
+        } = req.body;
+
+        db.add_Friend([id, first_name, last_name]).then(dbResult => {
+            res.status(200).send(dbResult);
+        }).catch(err => console.log(err))
+
+    },
+
+    findFriend: (req, res, next) => {
+        const db = req.app.get('db');
+        const {id} =req.params;
+
+        db.find_Friend([id]).then(dbResult => {
+            res.status(200).send(dbResult);
+        }).catch(err => console.log(err));
+
+    },
+
+    deleteFriend: (req, res, next) => {
+        const db = req.app.get('db');
+        const {
+
+            first_name,
+            last_name
+            
+        } = req.body
+
+        db.remove_friend([first_name, last_name]).then(dbResult => {
+            res.status(200).send(dbResult);
+        }).catch(err => console.log(err));
     }
 
 

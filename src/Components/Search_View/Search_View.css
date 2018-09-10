@@ -57,7 +57,7 @@
 }
 
 .searchResults{
-        border: 2px solid black;
+        /* border: 2px solid black; */
         margin: auto;
         margin-top: 30px;
         width: 700px;

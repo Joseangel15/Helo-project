@@ -114,5 +114,17 @@ app.post('/api/getByFirstName', c.getByFirstName)
 
 app.post('/api/getByLastName', c.getByLastName)
 
+//Add friend to the helofriends table
+
+app.post('/api/addFriend', c.addFriend)
+
+//Look for friends in the heloFriends table
+
+app.get('/api/allFriends/:id', c.findFriend)
+
+//Remove Friend
+
+app.post('/api/deleteFriend', c.deleteFriend)
+
 
 app.listen(SERVER_PORT, () => { console.log(`It's fun to stay in port ${SERVER_PORT}!`);});

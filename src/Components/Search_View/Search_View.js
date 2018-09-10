@@ -13,7 +13,9 @@ class Search_View extends Component {
             allUsers: [],
             filter: 'first_name',
             nameInput: '',
-            id: ''
+            id: '',
+            friended: [],
+            addRemove: 'Remove Friend'
 
         }
 
@@ -21,8 +23,9 @@ class Search_View extends Component {
         this.handleFilteredSearch = this.handleFilteredSearch.bind(this);
         this.handleFilter = this.handleFilter.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-
-        console.log(this.state.filter)
+        this.handleAddFriend = this.handleAddFriend.bind(this);
+        this.handleAtClick = this.handleAtClick.bind(this);
+        this.handleRemoveFriend = this.handleRemoveFriend.bind(this);
     }
 
     componentDidMount() {
@@ -51,18 +54,33 @@ class Search_View extends Component {
                 })
                 console.log(this.state.allUsers)
 
+                axios.get(`/api/allFriends/${id}`).then(res => {
+                    this.setState({
+                        friended: res.data
+                    })
+                    console.log(this.state.friended);
+                })
             })
             console.log(this.state.id)
         })
 
-    }
 
+    }
 
     handleFilter() {
 
-        this.setState({
-            filter: 'last_name'
-        })
+        if(this.state.filter === 'first_name') {
+            
+            this.setState({
+                filter: 'last_name'
+            })
+        } else {
+
+            this.setState({
+                filter: 'first_name'
+            })
+        }
+
         console.log(this.state.filter)
 
     }
@@ -114,15 +132,56 @@ class Search_View extends Component {
 
     }
 
+    handleAddFriend (first_name, last_name) {
+
+        
+        console.log(this.state.friend_fn)
+
+        const { id } = this.state;
+
+        const body ={first_name, last_name, id};
+
+        axios.post('/api/addFriend', body).then(res => {
+
+        })
+
+        this.setState({addRemove: 'Remove Friend'})
+
+
+    }
+
+    handleRemoveFriend (first_name, last_name) {
+
+        const body = {
+            first_name,
+            last_name
+        }
+
+        axios.post(`/api/deleteFriend`, body).then(res => {
+
+        })
+    }
+
+    handleAtClick  (first_name, last_name) {
+
+        if (this.state.addRemove === 'Add Friend') {
+            this.handleAddFriend(first_name, last_name)
+        } else {
+            this.handleRemoveFriend(first_name, last_name);
+        }
+    }
 
     render() {
 
+        
+
         const searches = this.state.allUsers.map(el => {
+
+
             return (
                 <div className='userCard' key={el.id}>
                     <div className='nameAndPic'>
                         <div className='userPic3'>
-
                             <img src={el.picture} alt="" className='truePic3' />
 
                         </div>
@@ -137,7 +196,14 @@ class Search_View extends Component {
                     </div>
 
                     <div className='btnBox'>
-                        <button className='addFriendBtn'>Add Friend</button>
+                        <button 
+                            className={this.state.addRemove}
+                            onClick={() => this.handleAtClick(el.first_name, el.last_name, el.id)}
+                            >
+                            
+                            {this.state.addRemove}
+                            
+                        </button>
                     </div>
                 </div>
             )
