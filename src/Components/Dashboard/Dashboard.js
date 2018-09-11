@@ -30,12 +30,13 @@ class Dashboard extends Component {
             allUsers: [],
             id: '',
             filtered: '',
-            recommended: false,
+            noRecomm: 'No Recommendations',
 
         }
 
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleAddFriend = this.handleAddFriend.bind(this);
     }
 
     componentDidMount() {
@@ -51,7 +52,8 @@ class Dashboard extends Component {
                 hobby: res.data[0].hobby,
                 birthday_day: res.data[0].birthday_day,
                 birthday_month: res.data[0].birthday_month,
-                birthday_year: res.data[0].birthday_year
+                birthday_year: res.data[0].birthday_year,
+                
 
             })
             console.log(this.state.userInfo)
@@ -131,32 +133,26 @@ class Dashboard extends Component {
             });
 
             let hairColorFilter = allUsers.filter(function (item) {
-                console.log(item[filtered])
                 return item[filtered] === hair_color
             });
 
             let eyeColorFilter = allUsers.filter(function (item) {
-                console.log(item[filtered])
                 return item[filtered] === eye_color
             });
 
             let hobbyFilter = allUsers.filter(function (item) {
-                console.log(item[filtered])
                 return item[filtered] === hobby
             });
 
             let birthdayDayFilter = allUsers.filter(function (item) {
-                console.log(item[filtered])
                 return item[filtered] === birthday_day
             }); 
 
             let birthdayMonthFilter = allUsers.filter(function (item) {
-                console.log(item[filtered])
                 return item[filtered] === birthday_month
             });
 
             let birthdayYearFilter = allUsers.filter(function (item) {
-                console.log(item[filtered])
                 return item[filtered] === birthday_year
             });
 
@@ -171,7 +167,6 @@ class Dashboard extends Component {
                 } 
             } else if (filtered === 'last_name') {
                 if (userInfo[0].last_name === last_name) {
-                    console.log(userInfo[0].last_name)
                     return this.setState({ allUsers: lastNameFilter })
                 }
             } else if (filtered === 'hair_color') {
@@ -198,7 +193,7 @@ class Dashboard extends Component {
                 if (userInfo[0].birthday_year === birthday_year) {
                     return this.setState({ allUsers: birthdayYearFilter })
                 }
-            }
+            } 
 
             
             console.log(this.state.allUsers)
@@ -209,13 +204,29 @@ class Dashboard extends Component {
 
     }
 
-    
+    handleAddFriend (first_name, last_name, id) {
 
+        console.log(this.state.friend_fn)
+
+        const body ={first_name, last_name, id};
+
+        axios.post('/api/addFriend', body).then(res => {
+
+        })
+
+        this.setState({addRemove: 'Remove Friend'})
+
+        this.componentDidMount()
+    }
+    
 
 render() {
     
     
         const users = this.state.allUsers.map(el => {
+
+            
+            console.log(this.state.allUsers)
             return (
                 <div className='userCard' key={el.id}>
                     <div className='nameAndPic'>
@@ -235,11 +246,12 @@ render() {
                     </div>
 
                     <div className='btnBox'>
-                        <button className='addFriendBtn'>Add Friend</button>
+                        <button className='AddFriend' onClick={() => this.handleAddFriend(el.first_name, el.last_name, el.id)}>Add Friend</button>
                     </div>
                 </div>
             )
-        })        
+        }) 
+               
     
 
         return (
@@ -314,7 +326,7 @@ render() {
                         </div>
 
                         <div className='recommendedResults'>
-                            {users} 
+                           {users} 
                             
                         </div>
 

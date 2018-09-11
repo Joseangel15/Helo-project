@@ -102,7 +102,7 @@ app.post('/api/allUsers', c.getAllUsers)
 
 //Get all user results to filter
 
-app.post('/api/allRecommended', c.getFiltered)
+app.post('/api/allRecommended', c.getAllUsers)
 
 //Get users for the Search View
 
@@ -110,9 +110,7 @@ app.post(`/api/allSearchedUsers`, c.get_Users)
 
 //Get filtered users based on first and last name
 
-app.post('/api/getByFirstName', c.getByFirstName)
-
-app.post('/api/getByLastName', c.getByLastName)
+app.post('/api/getByName', c.getByName)
 
 //Add friend to the helofriends table
 

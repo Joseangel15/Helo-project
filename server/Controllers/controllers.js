@@ -57,25 +57,14 @@ module.exports = {
 
     getAllUsers: (req, res, next) => {
         const db = req.app.get('db');
-        const {id} = req.body
-        
+        const {id} = req.body        
         console.log(req.body)
 
-        db.get_All_Users([id]).then(user => {
+        db.get_All_Users([req.session.user.id, id]).then(user => {
             res.status(200).send(user);
         }).catch(err => console.log(err))
     },
 
-    getFiltered: (req, res, next) => {
-        const db = req.app.get('db');
-        const {id} = req.body
-        
-        console.log(req.body)
-
-        db.getFiltered([id]).then(user => {
-            res.status(200).send(user);
-        }).catch(err => console.log(err))
-    },
 
     get_Users: (req, res, next) => {
         const db = req.app.get('db');
@@ -84,43 +73,43 @@ module.exports = {
         console.log(req.body)
 
         db.get_All_Searched([id]).then(user => {
-            res.status(200).send(user);
+            db.get_All_Users([req.session.user.id, id]).then(notFriends => {
+
+                for(var i = 0; i < user.length; i++){
+                    for(var j = 0; j < notFriends.length; j++){
+                        user[i].friendship = true;
+                        if(user[i].id == notFriends[j].id){
+                            user[i].friendship = false;
+                            break;
+                        }
+                    }                        
+                }
+                res.status(200).send(user);
+            })
+            
         }).catch(err => console.log(err))
     },
 
-    getByFirstName: (req, res, next) => {
+    getByName: (req, res, next) => {
         console.log('flower')
         const db = req.app.get('db');
         
-        const {
-            
-            
-            nameInput,
-            id
-            
-        } = req.body
-        
-        db.get_filteredBy_FirstName([ nameInput, id]).then( user => {
-            res.status(200).send(user)
-        }).catch(err => console.log(err))
-    },
+        const { filter, nameInput  } = req.body
 
-    getByLastName: (req, res, next) => {
-        
-        console.log('flower')
-        const db = req.app.get('db');
-        
-        const {
+        if(filter === 'first_name'){ 
             
-            
-            nameInput,
-            id
-            
-        } = req.body
-        
-        db.get_filteredBy_LastName([ nameInput, id]).then( user => {
+            db.get_filteredBy_FirstName([ nameInput ]).then( user => {
             res.status(200).send(user)
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err)) 
+    
+    } else 
+
+        {const { nameInput  } = req.body
+        
+        db.get_filteredBy_LastName([ nameInput ]).then( user => {
+            res.status(200).send(user)
+        }).catch(err => console.log(err))}
+
     },
 
     addFriend: (req, res, next) => {
@@ -131,7 +120,8 @@ module.exports = {
             id
         } = req.body;
 
-        db.add_Friend([id, first_name, last_name]).then(dbResult => {
+        db.add_Friend([req.session.user.id, first_name, last_name, id]).then(dbResult => {
+            console.log(req.session)
             res.status(200).send(dbResult);
         }).catch(err => console.log(err))
 
@@ -153,7 +143,7 @@ module.exports = {
 
             first_name,
             last_name
-            
+
         } = req.body
 
         db.remove_friend([first_name, last_name]).then(dbResult => {

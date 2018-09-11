@@ -15,7 +15,8 @@ class Search_View extends Component {
             nameInput: '',
             id: '',
             friended: [],
-            addRemove: 'Remove Friend'
+            thisPage: 1,
+            usersPage: 16,
 
         }
 
@@ -24,13 +25,12 @@ class Search_View extends Component {
         this.handleFilter = this.handleFilter.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleAddFriend = this.handleAddFriend.bind(this);
-        this.handleAtClick = this.handleAtClick.bind(this);
         this.handleRemoveFriend = this.handleRemoveFriend.bind(this);
     }
 
     componentDidMount() {
 
-
+        //Mounts the user into the id state
         axios.get('/api/user').then(res => {
             this.setState({
                 id: res.data[0].id
@@ -39,21 +39,20 @@ class Search_View extends Component {
 
             const { id } = this.state;
 
+            const body = {id} 
+
             console.log(this.state.id)
 
-            const body = {
 
-                id,
-            }
-
+            //Mounts all users into the allusers state
             axios.post(`/api/allSearchedUsers`, body).then(res => {
                 this.setState({
                     allUsers: res.data,
 
-
                 })
                 console.log(this.state.allUsers)
 
+                //mounts all my current friends into the friended state
                 axios.get(`/api/allFriends/${id}`).then(res => {
                     this.setState({
                         friended: res.data
@@ -97,22 +96,17 @@ class Search_View extends Component {
 
     handleSearch() {
 
-        const { filter, nameInput, id } = this.state;
+        const { filter, nameInput } = this.state;
 
         if (!nameInput) { return }
 
-        const body = {
+        const body = { filter, nameInput }
 
-            id,
-            nameInput,
-
-
-        }
         console.log(body)
 
 
         if (filter === 'first_name') {
-            axios.post('/api/getByFirstName', body).then(res => {
+            axios.post('/api/getByName', body).then(res => {
                 this.setState({
                     allUsers: res.data
                 })
@@ -120,7 +114,7 @@ class Search_View extends Component {
             })
 
         } else if (filter === 'last_name') {
-            axios.post('/api/getByLastName', body).then(res => {
+            axios.post('/api/getByName', body).then(res => {
                 this.setState({
                     allUsers: res.data
                 })
@@ -132,12 +126,10 @@ class Search_View extends Component {
 
     }
 
-    handleAddFriend (first_name, last_name) {
+    handleAddFriend (first_name, last_name, id) {
 
         
         console.log(this.state.friend_fn)
-
-        const { id } = this.state;
 
         const body ={first_name, last_name, id};
 
@@ -147,7 +139,7 @@ class Search_View extends Component {
 
         this.setState({addRemove: 'Remove Friend'})
 
-
+        this.componentDidMount()
     }
 
     handleRemoveFriend (first_name, last_name) {
@@ -160,20 +152,20 @@ class Search_View extends Component {
         axios.post(`/api/deleteFriend`, body).then(res => {
 
         })
+
+        this.componentDidMount()
     }
 
-    handleAtClick  (first_name, last_name) {
-
-        if (this.state.addRemove === 'Add Friend') {
-            this.handleAddFriend(first_name, last_name)
-        } else {
-            this.handleRemoveFriend(first_name, last_name);
-        }
-    }
+    
 
     render() {
 
-        
+        // let { thisPage, usersPage } = this.state;
+
+        // let indexOfLastUser = currentPage * usersPage;
+        // let indexOfFirstUser = indexOfLastUser - usersPage
+        // let profiles = allUsers.slice(indexOfFirstUser, indexOfLastUser);
+         
 
         const searches = this.state.allUsers.map(el => {
 
@@ -196,14 +188,11 @@ class Search_View extends Component {
                     </div>
 
                     <div className='btnBox'>
-                        <button 
-                            className={this.state.addRemove}
-                            onClick={() => this.handleAtClick(el.first_name, el.last_name, el.id)}
-                            >
                             
-                            {this.state.addRemove}
-                            
-                        </button>
+                        
+                            {el.friendship === true? 
+                            <button className='RemoveFriend' onClick={() => this.handleRemoveFriend(el.first_name, el.last_name, el.id)}>Remove Friend</button> :
+                            <button className='AddFriend' onClick={() => this.handleAddFriend(el.first_name, el.last_name, el.id)}>Add Friend</button> }
                     </div>
                 </div>
             )
@@ -211,7 +200,6 @@ class Search_View extends Component {
 
         return (
             <div>
-
 
                 <div className='NewgrayBackGround'>
 
