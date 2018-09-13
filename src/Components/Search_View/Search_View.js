@@ -16,6 +16,7 @@ class Search_View extends Component {
             id: '',
             usersPage: 16,
             btns: [],
+            users: [],
 
         }
 
@@ -62,8 +63,8 @@ class Search_View extends Component {
                 this.setState({
                     allUsers: newArray,
                     btns: Btns,
+                    users: newArray
                     
-
                 })
 
 
@@ -221,24 +222,31 @@ class Search_View extends Component {
 
     showPage(value) {
 
-        let newArray2 = [];
+        const { id } = this.state;
+
+            const body = { id }
+
+            //Mounts all users into the allusers state
+            axios.post(`/api/allSearchedUsers`, body).then(res => {
+                this.setState({
+                    users: res.data
+                })
+
+                let newArray2 = [];
+                
+                for (var i = ((value - 1) * 16); i < (value * 16); i++) {
+                    
+                    if (i < this.state.users.length) {
+                        newArray2.push(this.state.users[i]);
+                    }
+                }
+                
+                this.setState({
+                    allUsers: newArray2
+                })
+            })
         
-        for (var i = ((value - 1) * 16); i < (value * 16); i++) {
-            console.log(i)
-            console.log(value)
-            console.log(this.state.allUsers.length)
 
-            if (i < this.state.allUsers.length) {
-                console.log(this.state.allUsers[i])
-                newArray2.push(this.state.allUsers[i]);
-            }
-        }
-
-        this.setState({
-            allUsers: newArray2
-        })
-
-        console.log(newArray2)
     }
 
 
@@ -247,7 +255,7 @@ class Search_View extends Component {
 
         let page = this.state.btns.map((el, i) => {
             return (
-                <div key={el + i}>
+                <div key={el + i} className='littleBtns'>
                     <button onClick={() => { this.showPage(el) }}>{el}</button>
                 </div>
             )
