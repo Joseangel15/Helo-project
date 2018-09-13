@@ -14,9 +14,8 @@ class Search_View extends Component {
             filter: 'first_name',
             nameInput: '',
             id: '',
-            friended: [],
-            thisPage: 1,
             usersPage: 16,
+            btns: [],
 
         }
 
@@ -26,6 +25,7 @@ class Search_View extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleAddFriend = this.handleAddFriend.bind(this);
         this.handleRemoveFriend = this.handleRemoveFriend.bind(this);
+        this.showPage = this.showPage.bind(this);
     }
 
     componentDidMount() {
@@ -39,37 +39,43 @@ class Search_View extends Component {
 
             const { id } = this.state;
 
-            const body = {id} 
-
-            console.log(this.state.id)
-
+            const body = { id }
 
             //Mounts all users into the allusers state
             axios.post(`/api/allSearchedUsers`, body).then(res => {
+
+                let newArray = [];
+
+                for (let i = 0; i < 16; i++) {
+                    newArray.push(res.data[i])
+                }
+
+                let numBtns = Math.ceil(res.data.length / 16);
+
+                let Btns = [];
+
+                for (var i = 2; i < numBtns + 1; i++) {
+                    Btns.push(i)
+                }
+
+
                 this.setState({
-                    allUsers: res.data,
+                    allUsers: newArray,
+                    btns: Btns,
+                    
 
                 })
-                console.log(this.state.allUsers)
 
-                //mounts all my current friends into the friended state
-                axios.get(`/api/allFriends/${id}`).then(res => {
-                    this.setState({
-                        friended: res.data
-                    })
-                    console.log(this.state.friended);
-                })
+
             })
-            console.log(this.state.id)
         })
-
 
     }
 
     handleFilter() {
 
-        if(this.state.filter === 'first_name') {
-            
+        if (this.state.filter === 'first_name') {
+
             this.setState({
                 filter: 'last_name'
             })
@@ -96,53 +102,110 @@ class Search_View extends Component {
 
     handleSearch() {
 
-        const { filter, nameInput } = this.state;
+        const { filter, nameInput, allUsers } = this.state;
 
-        if (!nameInput) { return }
+        let newArray3 = [];
 
-        const body = { filter, nameInput }
+        if (nameInput === '') {
+            return
+        }
 
-        console.log(body)
+        else if (filter === 'first_name') {
+
+            for (var i = 0; i < allUsers.length; i++) {
+
+                if (allUsers[i].first_name === nameInput) {
+
+                    console.log(allUsers[i])
+
+                    newArray3.push(allUsers[i])
+
+                    console.log(newArray3)
 
 
-        if (filter === 'first_name') {
-            axios.post('/api/getByName', body).then(res => {
-                this.setState({
-                    allUsers: res.data
-                })
-                console.log(res.data)
-            })
+                    // this.setState({
+                    //     allUsers: [allUsers[i]]
+                    // })
 
+                }
+            }
         } else if (filter === 'last_name') {
-            axios.post('/api/getByName', body).then(res => {
-                this.setState({
-                    allUsers: res.data
-                })
-                console.log(res.data)
-            })
 
+            for (var i = 0; i < allUsers.length; i++) {
+
+                if (allUsers[i].last_name === nameInput) {
+
+                    console.log(allUsers[i])
+
+                    newArray3.push(allUsers[i])
+
+                    // this.setState({
+                    //     allUsers: [allUsers[i]]
+                    // })
+
+                }
+            }
+        }
+
+        if (newArray3.length >= 16) {
+
+            let newArray = [];
+
+            for (let i = 0; i < 8; i++) {
+                newArray.push(newArray3[i])
+            }
+
+            newArray3 = newArray;
+
+            let numBtns = Math.ceil(newArray3.length / 16);
+
+            let Btns = [];
+
+            for (let i = 2; i < numBtns + 1; i++) {
+                Btns.push(i)
+            }
+
+            this.setState({
+                btns: Btns,
+                allUsers: newArray3
+            })
+        } else {
+
+            let numBtns = Math.ceil(newArray3.length / 16);
+
+            let Btns = [];
+
+            for (let i = 2; i < numBtns + 1; i++) {
+                Btns.push(i)
+            }
+
+            this.setState({
+                btns: Btns,
+                allUsers: newArray3
+            })
         }
 
 
     }
 
-    handleAddFriend (first_name, last_name, id) {
 
-        
+    handleAddFriend(first_name, last_name, id) {
+
+
         console.log(this.state.friend_fn)
 
-        const body ={first_name, last_name, id};
+        const body = { first_name, last_name, id };
 
         axios.post('/api/addFriend', body).then(res => {
 
         })
 
-        this.setState({addRemove: 'Remove Friend'})
+        this.setState({ addRemove: 'Remove Friend' })
 
         this.componentDidMount()
     }
 
-    handleRemoveFriend (first_name, last_name) {
+    handleRemoveFriend(first_name, last_name) {
 
         const body = {
             first_name,
@@ -156,16 +219,40 @@ class Search_View extends Component {
         this.componentDidMount()
     }
 
-    
+    showPage(value) {
+
+        let newArray2 = [];
+        
+        for (var i = ((value - 1) * 16); i < (value * 16); i++) {
+            console.log(i)
+            console.log(value)
+            console.log(this.state.allUsers.length)
+
+            if (i < this.state.allUsers.length) {
+                console.log(this.state.allUsers[i])
+                newArray2.push(this.state.allUsers[i]);
+            }
+        }
+
+        this.setState({
+            allUsers: newArray2
+        })
+
+        console.log(newArray2)
+    }
+
+
 
     render() {
 
-        // let { thisPage, usersPage } = this.state;
+        let page = this.state.btns.map((el, i) => {
+            return (
+                <div key={el + i}>
+                    <button onClick={() => { this.showPage(el) }}>{el}</button>
+                </div>
+            )
+        })
 
-        // let indexOfLastUser = currentPage * usersPage;
-        // let indexOfFirstUser = indexOfLastUser - usersPage
-        // let profiles = allUsers.slice(indexOfFirstUser, indexOfLastUser);
-         
 
         const searches = this.state.allUsers.map(el => {
 
@@ -188,11 +275,11 @@ class Search_View extends Component {
                     </div>
 
                     <div className='btnBox'>
-                            
-                        
-                            {el.friendship === true? 
+
+
+                        {el.friendship === true ?
                             <button className='RemoveFriend' onClick={() => this.handleRemoveFriend(el.first_name, el.last_name, el.id)}>Remove Friend</button> :
-                            <button className='AddFriend' onClick={() => this.handleAddFriend(el.first_name, el.last_name, el.id)}>Add Friend</button> }
+                            <button className='AddFriend' onClick={() => this.handleAddFriend(el.first_name, el.last_name, el.id)}>Add Friend</button>}
                     </div>
                 </div>
             )
@@ -230,9 +317,15 @@ class Search_View extends Component {
 
                         <div className='pagination'>
 
+                            <button className='pageBtn' onClick={() => this.showPage(1)}>Page 1</button>
 
+                            <div className='allPageBtns'>
+                                {page}
+                            </div>
 
                         </div>
+
+                        <div className='bottom'></div>
 
                     </div>
 

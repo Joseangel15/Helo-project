@@ -8,11 +8,11 @@ module.exports = {
         const db = req.app.get('db');
         const newUserId = newId.toString()
         // console.log(newUserId)
-        
-        db.get_User_Info([ newUserId ]).then(dbResult => {
+
+        db.get_User_Info([newUserId]).then(dbResult => {
 
             res.status(200).send(dbResult);
-            
+
         }).catch(err => console.log(err))
     },
 
@@ -28,8 +28,8 @@ module.exports = {
 
     updateUserInfo: (req, res, next) => {
         const db = req.app.get('db');
-        const {id} = req.params
-        
+        const { id } = req.params
+
         const {
 
             first_name,
@@ -44,7 +44,7 @@ module.exports = {
 
         } = req.body
 
-        db.edit_UserInfo([ first_name, last_name, gender, hair_color, eye_color, hobby, birthday_day, birthday_month, birthday_year, id]).then( user => {
+        db.edit_UserInfo([first_name, last_name, gender, hair_color, eye_color, hobby, birthday_day, birthday_month, birthday_year, id]).then(user => {
             res.status(200).send(user);
         }).catch(err => {
             res.status(500).send({
@@ -52,13 +52,12 @@ module.exports = {
             })
             console.log(err)
         })
-    
+
     },
 
     getAllUsers: (req, res, next) => {
         const db = req.app.get('db');
-        const {id} = req.body        
-        console.log(req.body)
+        const { id } = req.body
 
         db.get_All_Users([req.session.user.id, id]).then(user => {
             res.status(200).send(user);
@@ -68,48 +67,24 @@ module.exports = {
 
     get_Users: (req, res, next) => {
         const db = req.app.get('db');
-        const {id} = req.body
-
-        console.log(req.body)
+        const { id } = req.body
 
         db.get_All_Searched([id]).then(user => {
             db.get_All_Users([req.session.user.id, id]).then(notFriends => {
 
-                for(var i = 0; i < user.length; i++){
-                    for(var j = 0; j < notFriends.length; j++){
+                for (var i = 0; i < user.length; i++) {
+                    for (var j = 0; j < notFriends.length; j++) {
                         user[i].friendship = true;
-                        if(user[i].id == notFriends[j].id){
+                        if (user[i].id == notFriends[j].id) {
                             user[i].friendship = false;
                             break;
                         }
-                    }                        
+                    }
                 }
                 res.status(200).send(user);
             })
-            
+
         }).catch(err => console.log(err))
-    },
-
-    getByName: (req, res, next) => {
-        console.log('flower')
-        const db = req.app.get('db');
-        
-        const { filter, nameInput  } = req.body
-
-        if(filter === 'first_name'){ 
-            
-            db.get_filteredBy_FirstName([ nameInput ]).then( user => {
-            res.status(200).send(user)
-        }).catch(err => console.log(err)) 
-    
-    } else 
-
-        {const { nameInput  } = req.body
-        
-        db.get_filteredBy_LastName([ nameInput ]).then( user => {
-            res.status(200).send(user)
-        }).catch(err => console.log(err))}
-
     },
 
     addFriend: (req, res, next) => {
@@ -129,7 +104,7 @@ module.exports = {
 
     findFriend: (req, res, next) => {
         const db = req.app.get('db');
-        const {id} =req.params;
+        const { id } = req.params;
 
         db.find_Friend([id]).then(dbResult => {
             res.status(200).send(dbResult);

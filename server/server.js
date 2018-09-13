@@ -108,10 +108,6 @@ app.post('/api/allRecommended', c.getAllUsers)
 
 app.post(`/api/allSearchedUsers`, c.get_Users)
 
-//Get filtered users based on first and last name
-
-app.post('/api/getByName', c.getByName)
-
 //Add friend to the helofriends table
 
 app.post('/api/addFriend', c.addFriend)

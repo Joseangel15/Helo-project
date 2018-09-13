@@ -164,7 +164,9 @@ class Dashboard extends Component {
             } else if (filtered === 'first_name') {
                 if (userInfo[0].first_name === first_name) {
                     return this.setState({ allUsers: firstNameFilter})   
-                } 
+                } else {
+                    return 'No Recommendations'
+                }
             } else if (filtered === 'last_name') {
                 if (userInfo[0].last_name === last_name) {
                     return this.setState({ allUsers: lastNameFilter })
@@ -226,7 +228,7 @@ render() {
         const users = this.state.allUsers.map(el => {
 
             
-            console.log(this.state.allUsers)
+            console.log(this.state.userInfo)
             return (
                 <div className='userCard' key={el.id}>
                     <div className='nameAndPic'>
