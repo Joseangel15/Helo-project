@@ -189,23 +189,36 @@ class Search_View extends Component {
 
         const { idNew } = this.state;
 
-            const newBody = { idNew }
+        const newBody = { idNew }
 
-        axios.post('/api/addFriend', body).then(res => {
+        if (first_name === this.state.nameInput || last_name === this.state.nameInput) {
+            axios.post('/api/addFriend', body).then(res => {
 
-            axios.post(`/api/allSearchedUsers`, newBody).then(res => {
-                console.log(res.data)
-                this.setState({
-                    moreUsers: res.data
+                axios.post(`/api/allSearchedUsers`, newBody).then(res => {
+                    console.log(res.data)
+                    this.setState({
+                        moreUsers: res.data
+                    })
+                    this.handleSearch()
                 })
-                console.log(this.state.page)
-                this.showPage(this.state.page)
             })
 
-        })
+        }
 
-        // this.setState({ addRemove: 'Remove Friend' })
+        else {
+            axios.post('/api/addFriend', body).then(res => {
 
+                axios.post(`/api/allSearchedUsers`, newBody).then(res => {
+                    console.log(res.data)
+                    this.setState({
+                        moreUsers: res.data
+                    })
+                    console.log(this.state.page)
+                    this.showPage(this.state.page)
+                })
+
+            })
+        }
     }
 
     handleRemoveFriend(first_name, last_name) {
@@ -217,37 +230,53 @@ class Search_View extends Component {
 
         const { idNew } = this.state;
 
-            const newBody = { idNew }
+        const newBody = { idNew }
 
-        axios.post(`/api/deleteFriend`, body).then(res => {
+        if (first_name === this.state.nameInput || last_name === this.state.nameInput ) {
 
-            axios.post(`/api/allSearchedUsers`, newBody).then(res => {
-                console.log(res.data)
-                this.setState({
-                    moreUsers: res.data
+            axios.post(`/api/deleteFriend`, body).then(res => {
+
+                axios.post(`/api/allSearchedUsers`, newBody).then(res => {
+                    console.log(res.data)
+                    this.setState({
+                        moreUsers: res.data
+                    })
+                    this.handleSearch()
                 })
-                console.log(this.state.page)
-                this.showPage(this.state.page)
             })
-        })
-        
+
+        } else {
+
+            axios.post(`/api/deleteFriend`, body).then(res => {
+
+                axios.post(`/api/allSearchedUsers`, newBody).then(res => {
+                    console.log(res.data)
+                    this.setState({
+                        moreUsers: res.data
+                    })
+                    console.log(this.state.page)
+                    this.showPage(this.state.page)
+                })
+            })
+        }
+
     }
 
     showPage(value) {
 
-            let newArray2 = [];
-            console.log(value)
-            for (var i = ((value - 1) * 16); i < (value * 16); i++) {
+        let newArray2 = [];
+        console.log(value)
+        for (var i = ((value - 1) * 16); i < (value * 16); i++) {
 
-                if (i < this.state.moreUsers.length) {
-                    newArray2.push(this.state.moreUsers[i]);
-                }
+            if (i < this.state.moreUsers.length) {
+                newArray2.push(this.state.moreUsers[i]);
             }
+        }
 
-            this.setState({
-                allUsers: newArray2,
-                page: value
-            })
+        this.setState({
+            allUsers: newArray2,
+            page: value
+        })
     }
 
     render() {
