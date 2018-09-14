@@ -67,10 +67,10 @@ module.exports = {
 
     get_Users: (req, res, next) => {
         const db = req.app.get('db');
-        const { id } = req.body
+        const { idNew } = req.body
 
-        db.get_All_Searched([id]).then(user => {
-            db.get_All_Users([req.session.user.id, id]).then(notFriends => {
+        db.get_All_Searched([idNew]).then(user => {
+            db.get_All_Users([req.session.user.id, idNew]).then(notFriends => {
 
                 for (var i = 0; i < user.length; i++) {
                     for (var j = 0; j < notFriends.length; j++) {
@@ -96,7 +96,6 @@ module.exports = {
         } = req.body;
 
         db.add_Friend([req.session.user.id, first_name, last_name, id]).then(dbResult => {
-            console.log(req.session)
             res.status(200).send(dbResult);
         }).catch(err => console.log(err))
 

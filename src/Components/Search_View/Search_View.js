@@ -13,10 +13,12 @@ class Search_View extends Component {
             allUsers: [],
             filter: 'first_name',
             nameInput: '',
-            id: '',
+            idNew: '',
             usersPage: 16,
             btns: [],
             users: [],
+            moreUsers: [],
+            page: ''
 
         }
 
@@ -34,13 +36,13 @@ class Search_View extends Component {
         //Mounts the user into the id state
         axios.get('/api/user').then(res => {
             this.setState({
-                id: res.data[0].id
+                idNew: res.data[0].id
 
             })
 
-            const { id } = this.state;
+            const { idNew } = this.state;
 
-            const body = { id }
+            const body = { idNew }
 
             //Mounts all users into the allusers state
             axios.post(`/api/allSearchedUsers`, body).then(res => {
@@ -59,18 +61,22 @@ class Search_View extends Component {
                     Btns.push(i)
                 }
 
-
                 this.setState({
                     allUsers: newArray,
                     btns: Btns,
                     users: newArray
-                    
                 })
 
-
             })
-        })
 
+            axios.post(`/api/allSearchedUsers`, body).then(res => {
+                this.setState({
+                    moreUsers: res.data
+                })
+            })
+
+            this.showPage(1)
+        })
     }
 
     handleFilter() {
@@ -103,46 +109,32 @@ class Search_View extends Component {
 
     handleSearch() {
 
-        const { filter, nameInput, allUsers } = this.state;
+        const { filter, nameInput, moreUsers } = this.state;
 
         let newArray3 = [];
 
+        console.log(moreUsers)
         if (nameInput === '') {
             return
         }
 
         else if (filter === 'first_name') {
 
-            for (var i = 0; i < allUsers.length; i++) {
+            for (var i = 0; i < moreUsers.length; i++) {
 
-                if (allUsers[i].first_name === nameInput) {
+                if (moreUsers[i].first_name === nameInput) {
 
-                    console.log(allUsers[i])
-
-                    newArray3.push(allUsers[i])
-
-                    console.log(newArray3)
-
-
-                    // this.setState({
-                    //     allUsers: [allUsers[i]]
-                    // })
+                    newArray3.push(moreUsers[i])
 
                 }
             }
         } else if (filter === 'last_name') {
 
-            for (var i = 0; i < allUsers.length; i++) {
+            for (var i = 0; i < moreUsers.length; i++) {
 
-                if (allUsers[i].last_name === nameInput) {
+                if (moreUsers[i].last_name === nameInput) {
 
-                    console.log(allUsers[i])
-
-                    newArray3.push(allUsers[i])
-
-                    // this.setState({
-                    //     allUsers: [allUsers[i]]
-                    // })
+                    newArray3.push(moreUsers[i])
 
                 }
             }
@@ -152,7 +144,7 @@ class Search_View extends Component {
 
             let newArray = [];
 
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 16; i++) {
                 newArray.push(newArray3[i])
             }
 
@@ -186,9 +178,7 @@ class Search_View extends Component {
             })
         }
 
-
     }
-
 
     handleAddFriend(first_name, last_name, id) {
 
@@ -197,13 +187,25 @@ class Search_View extends Component {
 
         const body = { first_name, last_name, id };
 
+        const { idNew } = this.state;
+
+            const newBody = { idNew }
+
         axios.post('/api/addFriend', body).then(res => {
+
+            axios.post(`/api/allSearchedUsers`, newBody).then(res => {
+                console.log(res.data)
+                this.setState({
+                    moreUsers: res.data
+                })
+                console.log(this.state.page)
+                this.showPage(this.state.page)
+            })
 
         })
 
-        this.setState({ addRemove: 'Remove Friend' })
+        // this.setState({ addRemove: 'Remove Friend' })
 
-        this.componentDidMount()
     }
 
     handleRemoveFriend(first_name, last_name) {
@@ -213,43 +215,40 @@ class Search_View extends Component {
             last_name
         }
 
+        const { idNew } = this.state;
+
+            const newBody = { idNew }
+
         axios.post(`/api/deleteFriend`, body).then(res => {
 
+            axios.post(`/api/allSearchedUsers`, newBody).then(res => {
+                console.log(res.data)
+                this.setState({
+                    moreUsers: res.data
+                })
+                console.log(this.state.page)
+                this.showPage(this.state.page)
+            })
         })
-
-        this.componentDidMount()
+        
     }
 
     showPage(value) {
 
-        const { id } = this.state;
+            let newArray2 = [];
+            console.log(value)
+            for (var i = ((value - 1) * 16); i < (value * 16); i++) {
 
-            const body = { id }
-
-            //Mounts all users into the allusers state
-            axios.post(`/api/allSearchedUsers`, body).then(res => {
-                this.setState({
-                    users: res.data
-                })
-
-                let newArray2 = [];
-                
-                for (var i = ((value - 1) * 16); i < (value * 16); i++) {
-                    
-                    if (i < this.state.users.length) {
-                        newArray2.push(this.state.users[i]);
-                    }
+                if (i < this.state.moreUsers.length) {
+                    newArray2.push(this.state.moreUsers[i]);
                 }
-                
-                this.setState({
-                    allUsers: newArray2
-                })
+            }
+
+            this.setState({
+                allUsers: newArray2,
+                page: value
             })
-        
-
     }
-
-
 
     render() {
 
@@ -263,8 +262,7 @@ class Search_View extends Component {
 
 
         const searches = this.state.allUsers.map(el => {
-
-
+            console.log(this.state.allUsers[0].id)
             return (
                 <div className='userCard' key={el.id}>
                     <div className='nameAndPic'>

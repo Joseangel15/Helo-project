@@ -162,11 +162,10 @@ class Dashboard extends Component {
                     return this.setState({ allUsers: genderFilter })
                 }
             } else if (filtered === 'first_name') {
-                if (userInfo[0].first_name === first_name) {
-                    return this.setState({ allUsers: firstNameFilter})   
-                } else {
-                    return 'No Recommendations'
-                }
+                console.log(firstNameFilter)  
+                
+                    return this.setState({ allUsers: firstNameFilter}) 
+                 
             } else if (filtered === 'last_name') {
                 if (userInfo[0].last_name === last_name) {
                     return this.setState({ allUsers: lastNameFilter })
@@ -224,11 +223,13 @@ class Dashboard extends Component {
 
 render() {
     
-    
-        const users = this.state.allUsers.map(el => {
 
-            
-            console.log(this.state.userInfo)
+    console.log(this.state.allUsers.length)
+    
+    const users = this.state.allUsers.map(el => {
+
+       
+
             return (
                 <div className='userCard' key={el.id}>
                     <div className='nameAndPic'>
@@ -252,9 +253,11 @@ render() {
                     </div>
                 </div>
             )
-        }) 
-               
-    
+
+        
+            }) 
+
+
 
         return (
             <div className='grayBackGround'>
@@ -328,8 +331,8 @@ render() {
                         </div>
 
                         <div className='recommendedResults'>
-                           {users} 
-                            
+                           {this.state.allUsers.length === 0 ? <div className='noRecom'>No Recommendations</div> : users} 
+                        
                         </div>
 
                     </div>
